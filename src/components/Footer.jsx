@@ -40,7 +40,7 @@ const Footer = () => {
         <div className="col-md-4 text-left">
             <form action="">
                 <div className="form-group position-relative fiel w-20 font-jost">
-                <label for="exampleInputEmail1" className='fhead'>Signup For The Latest News</label>
+                <label htmlFor="exampleInputEmail1" className='fhead'>Signup For The Latest News</label>
                 <input type="email" className="form-control rounded-0 my-2" id='exampleInputEmail1' placeholder="Enter your email"/>
                 <FiArrowRight style={{position: "absolute", top: "70%", right: "12px",
                 transform: "translateY(-50%)", cursor: "pointer"}}/>

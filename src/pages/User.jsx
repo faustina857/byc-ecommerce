@@ -11,11 +11,12 @@ const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
     try {
-        console.log({ email: loginEmail, password: loginPassword })
-      const response = await fetch("http://localhost:3000/api/byc-stores/auth/login", {
+        // console.log({ email: loginEmail, password: loginPassword })
+      const response = await fetch("http://localhost:3001/api/byc-stores/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+
         },
         body: JSON.stringify({
           email: loginEmail,
@@ -24,6 +25,7 @@ const handleLogin = async (e) => {
       });
 
      const data = await response.json();
+     console.log(data)
 
       if (!response.ok) {
         throw new Error(data.message || "Login failed. Try again.");

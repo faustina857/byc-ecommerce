@@ -287,6 +287,11 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
 }
+.product-img{
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
 .all-products{
   padding-bottom: 300px;
   margin: 150px 0;

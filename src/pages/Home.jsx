@@ -18,7 +18,7 @@ const Home = () => {
             <p className='font-jost'>Your body deserves comfort</p>
             <h1 className='font-jost'>Get the best for yourself</h1>
             <div>
-                <button className="hero-btn font-jost">Shop Now</button>
+                <button  onClick={viewAllProducts} className="hero-btn font-jost">Shop Now</button>
                 <button className="hero-btn2 font-jost">Learn more</button>
             </div>
             <div className="frame text-center">
@@ -49,7 +49,7 @@ const Home = () => {
         </div>
       </div>
       <div className='text-center'>
-        <button onClick={viewAllProducts} className="framebtn font-jost">View All</button>
+        <button className="framebtn font-jost">View All</button>
       </div>
       </div>
       <div className="container h-third">

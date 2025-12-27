@@ -1,8 +1,7 @@
 import React from 'react'
-import { Frame18,Frame19, Frame20, Frame21, Frame22 } from '../assets';
 import Recently from '../components/Recently';
 import { AiFillStar } from 'react-icons/ai';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiHeart,  FiShoppingCart } from 'react-icons/fi';
 import {  FaCaretDown, FaList, FaThLarge } from 'react-icons/fa';
 import ProductDetails from '../components/ProductDetails';
@@ -11,112 +10,55 @@ const AllProducts = () => {
 
   const [showDetails, setShowDetails] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [showButton, setShowButton] = useState(null)
+   
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/api/byc-stores/product/get-all-products");
+      const data = await response.json();
+      console.log(data)
 
-  const products = [];
+      const formatted = data.map((item) => {
+        // Calculate average rating
+        const avgRating =
+          item.productRating && item.productRating.length > 0
+            ? item.productRating.reduce((a, b) => Number(a) + Number(b), 0) /
+              item.productRating.length
+            : 0;
 
-  for (let i = 1; i <= 10; i++) {
-    products.push({
-      id: i,
-      name: "CAMISOLE" ,
-      model:"BYC-501LMS",
-      description:"Long Cotton Adjustable Strap Camisole Tank Top - Black",
-      price: "₦1,900.00",
-      rating: 4.05,
-      image: Frame18,
-      colors: [
-        { name: "Blue", hex: "#3870C4" },
-        { name: "Pink", hex: "#FF05E6" },
-        { name: "Orange", hex: "#FB8200" },
-        { name: "Black", hex: "#000" }
-      ],
-      sizes: ["S", "M", "L", "XL"]
-    });
-  }
+        return {
+          _id: item._id,                        // use _id consistently
+          name: item.productName,
+          model: item.productNumber,
+          description: item.productTitle,
+          price: Number(item.productPrice),     // keep as number
+          rating: avgRating.toFixed(1),
+          image: item.productImage[0],
+          colors: [
+            { name: "Blue", hex: "#3870C4" },
+            { name: "Pink", hex: "#FF05E6" },
+            { name: "Orange", hex: "#FB8200" },
+            { name: "Black", hex: "#000" }
+          ],
+          sizes: ["S", "M", "L", "XL"]
+            };
+      });
 
-  const items = [
-  {
-    id: 1,
-    name: "BOXERS",
-    model: "BYC 1161",
-    description: "Fashionable Men's Underwear Boxer Cotton Underwear 3 In 1",
-    price: "₦1,800.00",
-    rating: 4.05,
-    image: Frame19,
-    colors: [
-        { name: "Blue", hex: "#3870C4" },
-        { name: "Pink", hex: "#FF05E6" },
-        { name: "Orange", hex: "#FB8200" },
-        { name: "Black", hex: "#000" }
-      ],
-      sizes: ["S", "M", "L", "XL"]
-  },
-  {
-    id: 2,
-    name: "BOXERS",
-    model: "BYC 1201",
-    description: "Fashionable Men's Underwear Boxer Cotton Underwear 3 In 1",
-    price: "₦1,800.00",
-    rating: 4.05,
-    image: Frame20,
-    colors: [
-        { name: "Blue", hex: "#3870C4" },
-        { name: "Pink", hex: "#FF05E6" },
-        { name: "Orange", hex: "#FB8200" },
-        { name: "Black", hex: "#000" }
-      ],
-      sizes: ["S", "M", "L", "XL"]
-  },
-  {
-    id: 3,
-    name: "BOXERS",
-    model: "KBY-3204",
-    description: "Fashionable Men's Underwear Boxer Cotton Underwear 3 In 1",
-    price: "₦10,000.00",
-    rating: 4.05,
-    image: Frame21,
-    colors: [
-        { name: "Blue", hex: "#3870C4" },
-        { name: "Pink", hex: "#FF05E6" },
-        { name: "Orange", hex: "#FB8200" },
-        { name: "Black", hex: "#000" }
-      ],
-      sizes: ["S", "M", "L", "XL"]
-  },
-  {
-    id: 4,
-    name: "BOXERS",
-    model: "BYL 6709",
-    description: "Fashionable Men's Underwear Boxer Cotton Underwear 3 In 1",
-    price: "₦12,000.00",
-    rating: 4.05,
-    image: Frame22,
-    colors: [
-        { name: "Blue", hex: "#3870C4" },
-        { name: "Pink", hex: "#FF05E6" },
-        { name: "Orange", hex: "#FB8200" },
-        { name: "Black", hex: "#000" }
-      ],
-      sizes: ["S", "M", "L", "XL"]
-  },
-  {
-    id: 5,
-    name: "BOXERS",
-    model: "KBY-3204",
-    description: "Fashionable Men's Underwear Boxer Cotton Underwear 3 In 1",
-    price: "₦10,000.00",
-    rating: 4.05,
-    image: Frame21,
-    colors: [
-        { name: "Blue", hex: "#3870C4" },
-        { name: "Pink", hex: "#FF05E6" },
-        { name: "Orange", hex: "#FB8200" },
-        { name: "Black", hex: "#000" }
-      ],
-      sizes: ["S", "M", "L", "XL"]
-  },
-];
-const [isWishlisted, setIsWishlisted] = useState(false);
-const [showButton, setShowButton] = useState(null)
+      setProducts(formatted);
+      setLoading(false);
+    } catch (error) {
+      console.log("Fetch error:", error);
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, [])
+
 if (showDetails && selectedProduct) {
     return (
       <ProductDetails
@@ -127,6 +69,7 @@ if (showDetails && selectedProduct) {
       />
     );
   }
+ 
   return (
     <>
     <div className="container all-products shadow">
@@ -147,10 +90,13 @@ if (showDetails && selectedProduct) {
           <div className='shadow-sm' style={{color:"#CE6B6B",padding:"7px 20px",backgroundColor:"#FFF"}}><FaThLarge size={20}/></div>
         </div>
         <hr style={{backgroundColor:"#F1EEEE",height:"2px", border:"none"}}/>
-      <div className="products-grid">
 
-        {products.map((product) => (
-          <div className="product-card shadow-sm my-3 " onClick={() => setShowButton(product.id)} key={product.id}>
+      <div className="products-grid">
+        {loading ? (
+          <p>Loading products...</p>
+        ) : (
+           products.map((product) => (
+          <div className="product-card shadow-sm my-3 " onMouseOver={() => setShowButton(product._id)} key={product._id}>
             <img src={product.image} className="product-img w-100 rounded-top" />
             <div className='p-2'>
             <h6 className="card-title mb-1 mt-2">{product.name}</h6>
@@ -158,16 +104,17 @@ if (showDetails && selectedProduct) {
             <p className="text-secondary " style={{fontSize:'11px'}}>{product.description}</p>
             <p className="mb-3" style={{fontWeight:"500"}}>{product.price}</p>
             <div className="d-flex align-items-center small mt-auto mb-4">
-                <AiFillStar style={{color:"#FB8200"}} />
-                <AiFillStar style={{color:"#FB8200"}} />
-                <AiFillStar style={{color:"#FB8200"}} />
-                <AiFillStar style={{color:"#FB8200"}} />
-                <AiFillStar style={{color:"#FB8200"}} />
+                {[...Array(5)].map((_, i) => (
+                    <AiFillStar
+                      key={i}
+                      style={{ color: i < Math.round(product.rating) ? "#FB8200" : "#CCC" }}
+                    />
+                  ))}
                 <span style={{fontWeight:"500",fontSize:"16px" ,color:"#5E6366",marginLeft:"8px"}}>{product.rating}</span>
             </div>
-            {showButton === product.id && (
+            {showButton === product._id && (
               <div className='mb-3'>
-              <button className='mr-3' onClick={() => setIsWishlisted(!isWishlisted)}
+              <button className='mr-3' onClick={(e) => { e.stopPropagation(); setIsWishlisted(!isWishlisted); }}
               style={{backgroundColor:"#fff",color:"#BD3A3A",border:"1px solid #BD3A3A",borderRadius:"5px",padding:"5px 7px",fontWeight:"500",fontSize:"13px"}}>
                 <FiHeart fill={isWishlisted ? "#BD3A3A" : "none"} className='mr-2'/>Wishlist</button>
               <button  onClick={(e) => {
@@ -181,44 +128,9 @@ if (showDetails && selectedProduct) {
             )}
             </div>
           </div>
-        ))}
+        ))
+      )}
       </div>
-      <div className="recent-grid mt-4">
-              {items.map((items) => (
-                <div onClick={() => setShowButton(items.id)} key={items.id} className="card border-0 shadow-sm rounded-top">
-                    <img src={items.image} alt={items.name} className="rounded-top"/>
-                    <div className="card-body">
-                    <h6 className="card-title mb-1 mt-2">
-                      {items.name}
-                    </h6>
-                    <p className="card-text small mb-2">{items.model}</p>
-                    <p className="text-secondary my-3" style={{fontSize:'11px'}}>{items.description}</p>
-                    <p className="mb-3" style={{fontWeight:"500"}}>{items.price}</p>
-                    <div className="d-flex align-items-center gap-1 small mt-auto mb-3">
-                      <AiFillStar style={{color:"#FB8200"}} />
-                      <AiFillStar style={{color:"#FB8200"}} />
-                      <AiFillStar style={{color:"#FB8200"}} />
-                      <AiFillStar style={{color:"#FB8200"}} />
-                      <AiFillStar style={{color:"#FB8200"}} />
-                      <span style={{fontWeight:"500", color:"#5E6366",marginLeft:"8px"}}>{items.rating}</span>
-                    </div>
-                    {showButton === items.id && (
-                    <div className='mb-3'>
-                    <button className='mr-3' onClick={() => setIsWishlisted(!isWishlisted)}
-                    style={{backgroundColor:"#fff",color:"#BD3A3A",border:"1px solid #BD3A3A",borderRadius:"5px",padding:"5px 7px",fontWeight:"500",fontSize:"13px"}}>
-                      <FiHeart className='mr-2'fill={isWishlisted ? "#BD3A3A" : "none"}/>Wishlist</button>
-                    <button onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedProduct(items);
-                        setShowDetails(true);
-                      }} style={{backgroundColor:"#BD3A3A",color:"#fff",border:"none",borderRadius:"5px",padding:"5px 7px",fontWeight:"500",fontSize:"13px"}}>
-                      <FiShoppingCart className='mr-2'/>Buy Now</button>
-                  </div>
-                  )}
-                  </div>
-                </div>
-              ))}
-            </div>
     </div>
 
     <Recently/>
