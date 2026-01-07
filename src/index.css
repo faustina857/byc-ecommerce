@@ -378,6 +378,11 @@
   margin: 120px 0;
 }
 
+@media screen and (max-width: 800px){
+  .products-grid{
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
 
 
 

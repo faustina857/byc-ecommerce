@@ -5,8 +5,7 @@ import { Frame10, Frame11, Frame12, Image} from '../assets';
 const BlogSection = () => {
   return (
     <>
-     <div className="container px-4 n-blog">
-        
+    <div className="container px-4 n-blog">
         <div className="row">
         <div className="col-md-4">
             <div className="card border-0 shadow-sm h-100" >
@@ -78,7 +77,7 @@ const BlogSection = () => {
         <div className='text-center'>
             <button className='framebtn font-jost'>View All</button>
         </div>
-     </div>
+    </div>
     </>
   )
 }

@@ -1,7 +1,8 @@
 import React from 'react'
 import Recently from '../components/Recently';
 import { AiFillStar } from 'react-icons/ai';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { CartContext } from '../context/CartContext';
 import { FiHeart,  FiShoppingCart } from 'react-icons/fi';
 import {  FaCaretDown, FaList, FaThLarge } from 'react-icons/fa';
 import ProductDetails from '../components/ProductDetails';
@@ -12,15 +13,17 @@ const AllProducts = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [showButton, setShowButton] = useState(null)
+  const { wishlist, addToWishlist, removeFromWishlist } = useContext(CartContext);
+  const isInWishlist = (id) =>
+  wishlist.some(item => item._id === id);
+
    
 useEffect(() => {
   const fetchProducts = async () => {
     try {
       const response = await fetch("http://localhost:3001/api/byc-stores/product/get-all-products");
       const data = await response.json();
-      console.log(data)
 
       const formatted = data.map((item) => {
         // Calculate average rating
@@ -114,9 +117,11 @@ if (showDetails && selectedProduct) {
             </div>
             {showButton === product._id && (
               <div className='mb-3'>
-              <button className='mr-3' onClick={(e) => { e.stopPropagation(); setIsWishlisted(!isWishlisted); }}
+              <button className='mr-3' onClick={(e) => { e.stopPropagation(); isInWishlist(product._id)
+                  ? removeFromWishlist(product._id)
+                  : addToWishlist(product); }}
               style={{backgroundColor:"#fff",color:"#BD3A3A",border:"1px solid #BD3A3A",borderRadius:"5px",padding:"5px 7px",fontWeight:"500",fontSize:"13px"}}>
-                <FiHeart fill={isWishlisted ? "#BD3A3A" : "none"} className='mr-2'/>Wishlist</button>
+                <FiHeart fill={isInWishlist(product._id) ? "#BD3A3A" : "none"} className='mr-2'/>Wishlist</button>
               <button  onClick={(e) => {
                         e.stopPropagation();
                         setSelectedProduct(product);

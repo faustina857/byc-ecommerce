@@ -1,7 +1,6 @@
 import React from 'react'
 import { Frame18 } from '../assets';
 import { FiChevronRight, } from 'react-icons/fi';
-import { FiStar } from 'react-icons/fi';
 import { AiFillStar } from 'react-icons/ai';
 
 

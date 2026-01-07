@@ -4,10 +4,8 @@ import { FiMail, FiPhone, FiArrowRight } from "react-icons/fi";
 
 const Footer = () => {
   return (
-    <>
-      
-<footer className="text-center py-5" style={{backgroundColor:"#212121", color:"white"}}>
-  
+  <>
+  <footer className="text-center py-5" style={{backgroundColor:"#212121", color:"white"}}>
   <section className="">
     <div className="container text-center text-md-start mt-5 mb-5">
       <div className="row">
@@ -71,8 +69,7 @@ const Footer = () => {
    </div>
   <p className='hr-text font-jost'>All rights Reserved  copyright bycafrica 2021.</p>
 </footer>
-
-    </>
+  </>
   )
 }
 

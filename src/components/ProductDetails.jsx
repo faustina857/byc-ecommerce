@@ -5,13 +5,19 @@ import CustomerReviews from "./CustomerReviews";
 import Recently from "./Recently";
 import { CartContext } from "../context/CartContext";
 import Swal from "sweetalert2";
+
 const ProductDetails = ({ product, onBack }) => {
   const { addToCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { addToWishlist, removeFromWishlist, wishlist } = useContext(CartContext);
+
+  const isInWishlist = wishlist.some(
+    reopen => reopen._id === product._id
+    );
+
   const productImages = product?.images?.length > 0 ? product.images : [product.image];
   const handleQuantityChange = (type) => {
     if (type === "increase") {
@@ -53,23 +59,14 @@ const ProductDetails = ({ product, onBack }) => {
       </button>
       <div className="container bg-white rounded-lg shadow productsD">
         <div>
-          <img
-            className="d-img"
-            src={productImages[currentImageIndex]}
-            alt={product.name}
-          />
+          <img className="d-img"
+               src={productImages[currentImageIndex]}
+               alt={product.name}/>
           {productImages.length > 1 && (
             <div className="grid grid-cols-4 gap-3">
               {productImages.map((img, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={
-                    currentImageIndex === index
-                      ? "border-red-600 scale-105"
-                      : "border-gray-200 hover:border-gray-300"
-                  }
-                >
+                <button key={index} onClick={() => setCurrentImageIndex(index)}
+                  className={currentImageIndex === index? "border-red-600 scale-105" : "border-gray-200 hover:border-gray-300"}>
                   <img src={img} alt={`${product.name} ${index + 1}`} />
                 </button>
               ))}
@@ -85,14 +82,7 @@ const ProductDetails = ({ product, onBack }) => {
               {[...Array(5)].map((_, i) => (
                 <AiFillStar key={i} style={{ color: "#FB8200" }} />
               ))}
-              <span
-                style={{
-                  fontWeight: "500",
-                  fontSize: "16px",
-                  color: "#5E6366",
-                  marginLeft: "7px",
-                }}
-              >
+              <span style={{fontWeight: "500",fontSize: "16px",color: "#5E6366",marginLeft: "7px"}}>
                 {product.rating}
               </span>
             </div>
@@ -107,19 +97,11 @@ const ProductDetails = ({ product, onBack }) => {
               <label style={{ fontWeight: "600", fontSize: "16px" }}>Available Sizes</label>
               <div>
                 {product.sizes.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    style={{
-                      border: selectedSize === size ? "1px solid #FB8200" : "1px solid #ccc",
-                      cursor: "pointer",
-                      backgroundColor: "#FFF",
-                      borderRadius: "5px",
-                      padding: "5px 10px",
-                      marginRight: "5px",
-                    }}
-                  >
-                    {size}
+                  <button key={size} onClick={() => setSelectedSize(size)}
+                    style={{ border: selectedSize === size ? "1px solid #FB8200" : "1px solid #ccc",
+                      cursor: "pointer",backgroundColor: "#FFF",borderRadius: "5px",
+                      padding: "5px 10px",marginRight: "5px"}}>
+                   {size}
                   </button>
                 ))}
               </div>
@@ -131,18 +113,10 @@ const ProductDetails = ({ product, onBack }) => {
               <p style={{ fontWeight: "600", fontSize: "16px" }}>Available Colours</p>
               <div style={{ display: "flex", gap: "10px" }}>
                 {product.colors.map((color) => (
-                  <button
-                    key={color.name}
-                    onClick={() => setSelectedColor(color)}
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      backgroundColor: color.hex,
-                      border:
-                        selectedColor?.name === color.name
-                          ? "2px solid #FB8200"
-                          : "2px solid #ddd",
+                  <button key={color.name} onClick={() => setSelectedColor(color)}
+                    style={{ width: "40px",height: "40px",
+                      borderRadius: "50%", backgroundColor: color.hex,
+                      border: selectedColor?.name === color.name ? "2px solid #FB8200" : "2px solid #ddd",
                       cursor: "pointer",
                     }}
                     title={color.name}
@@ -152,65 +126,32 @@ const ProductDetails = ({ product, onBack }) => {
             </div>
           )}
           {/* Quantity and Wishlist */}
-          <div style={{ display: "flex", gap: "30px", marginBottom: "15px" }}>
+          <div style={{ display: "flex", gap: "30px", marginBottom: "15px",marginTop:'10px' }}>
             <div>
-              <button
-                onClick={() => handleQuantityChange("decrease")}
-                disabled={quantity <= 1}
-                style={{
-                  backgroundColor: "#BD3A3A",
-                  color: "#fff",
-                  border: "none",
-                  padding: "1px 15px",
-                }}
-              >
-                -
+              <button onClick={() => handleQuantityChange("decrease")} disabled={quantity <= 1}
+                style={{backgroundColor: "#BD3A3A",color: "#fff", border: "none", padding: "1px 15px",}}>-
               </button>
               <span className="mx-2">{quantity}</span>
-              <button
-                onClick={() => handleQuantityChange("increase")}
-                style={{
-                  backgroundColor: "#BD3A3A",
-                  color: "#fff",
-                  border: "none",
-                  padding: "1px 15px",
-                }}
-              >
+              <button onClick={() => handleQuantityChange("increase")}
+                style={{ backgroundColor: "#BD3A3A",color: "#fff",border: "none",padding: "1px 15px"}}>
                 +
               </button>
             </div>
             <div>
-              <button
-                onClick={() => setIsWishlisted(!isWishlisted)}
-                style={{
-                  border: "1px solid #BD3A3A",
-                  color: "#BD3A3A",
-                  backgroundColor: "#fff",
-                  padding: "4px 50px",
-                  borderRadius: "5px",
-                }}
-              >
-                <FiHeart
-                  size={15}
-                  fill={isWishlisted ? "#BD3A3A" : "none"}
-                  className="mr-2"
-                />
+              <button onClick={() => isInWishlist
+                    ? removeFromWishlist(product._id)
+                    : addToWishlist(product)}
+                style={{border: "1px solid #BD3A3A",color: "#BD3A3A", backgroundColor: "#fff",
+                  padding: "4px 50px",borderRadius: "5px"}}>
+                <FiHeart size={15} fill={isInWishlist ? "#BD3A3A" : "none"} className="mr-2"/>
                 Wishlist
               </button>
             </div>
           </div>
           {/* Add to Cart */}
-          <button
-            onClick={handleAddToCart}
-            style={{
-              border: "none",
-              backgroundColor: "#BD3A3A",
-              color: "#fff",
-              padding: "5px 80px",
-              borderRadius: "5px",
-            }}
-          >
-            <FiShoppingCart size={16} className="mr-2" /> Add to Cart
+          <button onClick={handleAddToCart}
+            style={{ border: "none",backgroundColor: "#BD3A3A",color: "#fff",padding: "5px 80px", borderRadius: "5px"}}
+          ><FiShoppingCart size={16} className="mr-2" /> Add to Cart
           </button>
         </div>
       </div>

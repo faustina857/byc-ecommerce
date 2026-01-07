@@ -5,19 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 const Navbar = () => {
   const navigate = useNavigate();
-  const { cartCount } = useContext(CartContext);
+  const { cartCount, wishlist } = useContext(CartContext);
   return (
     <nav className="navbar navbar-expand-lg navbar-light py-3 px-4 font-jost">
       <Link className="navbar-brand" to="/">Shop Products</Link>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -43,28 +36,36 @@ const Navbar = () => {
           <Link to="/user">
             <FiUser color="#000" size={20} style={{ marginRight: "17px" }} />
           </Link>
+          <div onClick={() => navigate("/wishlist")}
+            style={{ cursor: "pointer", position: "relative" }}>
           <FiHeart size={20} style={{ marginRight: "17px" }} />
-          <div
-            className="cart-icon"
-            onClick={() => navigate("/cart")}
-            style={{ cursor: "pointer", position: "relative" }}
-          >
-            <FiShoppingCart size={20} style={{ marginRight: "17px" }} />
-            {cartCount > 0 && (
-              <span
-                style={{
+              {wishlist.length > 0 && 
+              <span style={{
                   position: "absolute",
-                  top: "-5px",
-                  right: "-10px",
+                  top: "-8px",
+                  right: "8px",
                   backgroundColor: "red",
                   color: "white",
-                  borderRadius: "50%",
+                  borderRadius: "70%",
+                  padding: "2px 6px",
+                  fontSize: "12px",
+                }}>{wishlist.length}</span>}
+          </div>
+          <div className="cart-icon" onClick={() => navigate("/cart")}
+            style={{ cursor: "pointer", position: "relative" }}>
+            <FiShoppingCart size={20} style={{ marginRight: "17px" }} />
+            {cartCount > 0 && (
+              <span style={{
+                  position: "absolute",
+                  top: "-8px",
+                  right: "8px",
+                  backgroundColor: "red",
+                  color: "white",
+                  borderRadius: "80%",
                   padding: "2px 6px",
                   fontSize: "12px",
                 }}
-              >
-                {cartCount}
-              </span>
+              > {cartCount} </span>
             )}
           </div>
         </div>

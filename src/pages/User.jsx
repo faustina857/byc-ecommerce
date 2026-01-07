@@ -4,7 +4,11 @@ import { useNavigate } from "react-router-dom";
 const User = () => {
     const navigate = useNavigate()
     const [loginEmail, setLoginEmail] = useState("");
+    const [showSignup, setShowSignup] = useState(false)
     const [loginPassword, setLoginPassword] = useState("");
+    const [signupName, setSignupName] = useState("");
+    const [signupEmail, setSignupEmail] = useState("");
+    const [signupPassword, setSignupPassword] = useState("");
     const [message, setMessage] = useState("");
 
 const handleLogin = async (e) => {
@@ -32,8 +36,45 @@ const handleLogin = async (e) => {
       }
       setMessage("Login successful!");
       localStorage.setItem("token", data.token);
+      const redirectTo = localStorage.getItem("redirectAfterLogin") || "/";
+      localStorage.removeItem("redirectAfterLogin"); // clean up
+      navigate(redirectTo); // redirect after login
 
-      navigate("/"); // redirect to homepage
+    } catch (error) {
+      setMessage(error.message);
+    }
+  };
+
+
+
+
+   const handleSignup = async (e) => {
+    e.preventDefault();
+    setMessage("");
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/byc-stores/user/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: signupName,
+            email: signupEmail,
+            password: signupPassword,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Signup failed");
+      }
+
+      setMessage("Account created successfully. Please login.");
+      setShowSignup(false);
+
     } catch (error) {
       setMessage(error.message);
     }
@@ -77,7 +118,57 @@ const handleLogin = async (e) => {
                <h5 className='text-center mb-5' style={{fontWeight:"700"}}>Create your account</h5>
                <p>Create your customer account in just a few clicks! <br /> 
                   You can register using your e-mail address </p>
-                  <button className='btn w-100 create' style={{fontWeight:"700",backgroundColor:"#BD3A3A",color:"#fff"}}>CREATE AN ACCOUNT VIA E-MAIL</button>
+                  {showSignup && (
+                    <form onSubmit={handleSignup}>
+                    <div className="mb-3">
+                  <label>Full Name</label>
+                  <input
+                    type="text"
+                    className="w-100 py-1"
+                    value={signupName}
+                    onChange={(e) => setSignupName(e.target.value)}
+                    required
+                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>E-mail</label>
+                  <input
+                    type="email"
+                    className="w-100 py-1"
+                    value={signupEmail}
+                    onChange={(e) => setSignupEmail(e.target.value)}
+                    required
+                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    className="w-100 py-1"
+                    value={signupPassword}
+                    onChange={(e) => setSignupPassword(e.target.value)}
+                    required
+                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn w-100"
+                  style={{ backgroundColor: "#BD3A3A", color: "#fff", fontWeight: "700" }}
+                >
+                  SIGN UP
+                </button>
+
+                  </form>
+                )}
+                  {!showSignup && (
+                    <button className='btn w-100 create' onClick={() => setShowSignup(true)} style={{fontWeight:"700",backgroundColor:"#BD3A3A",color:"#fff"}}>CREATE AN ACCOUNT VIA E-MAIL</button>
+                  )}
             </div>
         </div>
       </div>
@@ -86,3 +177,6 @@ const handleLogin = async (e) => {
 }
 
 export default User
+
+
+
