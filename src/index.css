@@ -256,6 +256,7 @@
   background-color: #BD3A3A17;
   padding: 15px;
   border-radius: 5px;
+  object-fit: cover;
 }
 .c-row{
   margin: 60px 70px;
@@ -345,6 +346,7 @@
 }
 .d-img{
   width: 350px;
+  height: 470px;
 }
 .bnhg{
   color: #b32121;
@@ -352,6 +354,7 @@
   border: none;
 }
 .prod-rev{
+  display: flex;
   gap: 50px;
   margin-bottom: 50px;
 }
@@ -371,6 +374,7 @@
   display: flex;
   gap: 40px;
 }
+
 .create{
   margin-top: 180px;
 }
@@ -378,11 +382,362 @@
   margin: 120px 0;
 }
 
-@media screen and (max-width: 800px){
-  .products-grid{
-    grid-template-columns: repeat(4, 1fr);
-  }
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  width: 400px;
+  border-radius: 8px;
+}
+.thumb-img {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.modal-content-custom {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+}
+.checkout-hr{
+  border-left: 1px solid #F1EEEE;
+  height: 180px;
+}
+.cart-hr{
+  display: none;
+}
+.prods-info{
+  margin-right: 40px;
+}
+/* Hide desktop nav on mobile */
+.desktop-nav {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.desktop-nav ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.desktop-nav .nav-item {
+  list-style: none;
+}
+
+/* Hamburger */
+.hamburger {
+  background: none;
+  border: none;
+  display: none;
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  top: -8px;
+  right: 8px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+/* ---------------- MOBILE MENU ---------------- */
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 80%;
+  max-width: 320px;
+  height: 100vh;
+  background: white;
+  padding: 30px;
+  transition: 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 1000;
+}
+
+.mobile-menu.show {
+  right: 0;
+}
+
+.mobile-menu a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.close-btn {
+  align-self: flex-end;
+  background: none;
+  border: none;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 999;
+}
+.brand a {
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 400;
+  color: black;
 }
 
 
+
+@media screen and (max-width: 830px){
+  .products-grid{
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .all-products{
+    margin-top: 40px;
+  }
+}
+
+@media screen and (max-width: 450px){
+  .products-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .page-title{
+    font-size: 20px;
+  }
+  .most-sold{
+    display: none;
+  }
+  .d-list{
+    display: none;
+  }
+  .p-text{
+    font-size: 11px;
+  }
+  .all-products{
+    margin-top: 20px;
+  }
+  /* .navbar-toggler{
+    border: none !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+  }
+  .navbar-toggler-icon{
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='black' stroke-width='3' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+    width: 25px !important;
+
+  } */
+  .pro-btn{
+    padding: 3px !important;
+  }
+  .home-pic{
+    margin-bottom: 20px;
+  }
+  .check{
+    font-size: 20px;
+  }
+  .hom-pic{
+    padding: 0 40px !important;
+    margin-bottom: 30px;
+  }
+  .framebtn{
+    margin-top: 40px;
+  }
+  .user{
+    margin: 20px 0;
+  }
+  .remember{
+    display: none;
+  }
+ .log-hr{
+  display: none;
+ }
+ .sign-up{
+  margin-top: 50px;
+ }
+ .sign-text{
+  font-size: 13px;
+ }
+ .pic-thumb{
+  width: 100px;
+  height: 150px !important;
+  object-fit: cover;
+  border-radius: 4px;
+ }
+ .checkout-hr{
+  width: 290px;
+  height: 2px ;
+  margin: 5px 0;
+  border-bottom: 2px solid #F1EEEE !important;
+ }
+ .checks-text{
+  font-size: 12px;
+ }
+ .ships-text{
+  font-size: 13px;
+ }
+ .cart-img{
+  width: 320px;
+  height: 190px !important;
+  object-fit: cover;
+  border-radius: 4px;
+ }
+.cart{
+  flex-wrap: wrap;
+}
+.cart-price{
+  display: flex;
+  gap: 10px;
+}
+.cart-hr{
+  display: block;
+  border: 1px solid #F1EEEE;
+  width: 320px;
+  margin: 0 !important;
+}
+.cart-btns{
+  padding: 6px !important;
+}
+
+.bnhg{
+  font-size: 12px;
+}
+.productsD{
+  margin: 0;
+  padding: 25px;
+  flex-direction: column;
+  gap: 10px;
+}
+.d-img{
+  width: 180px;
+  height: 200px !important;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.detail-btn{
+  margin-top: 8px;
+}
+.details-wlist{
+  padding: 5px 20px !important;
+}
+.prod-rev{
+  flex-direction: column;
+}
+.reviews{
+  text-align: center;
+}
+.recent-grid{
+   grid-template-columns: repeat(2, 1fr);
+}
+.b-card{
+  margin-bottom: 30px;
+}
+.a-head{
+  font-size: 16px;
+  margin: 20px !important;
+}
+.a-heads{
+  display: none;
+}
+.about-p{
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+}
+.about-box{
+  margin: 15px 20px;
+}
+.year{
+  font-size: 14px;
+}
+.c-head{
+  margin: 25px;
+  font-size: 16px;
+}
+.c-icon{
+  width: 60px;
+  padding: 15px;
+}
+.contact-form{
+  width: 21rem !important;
+}
+.blog-row{
+  margin: 30px 0;
+}
+.blog-text{
+  font-size: 16px;
+  margin: 10px !important;
+}
+.blog-btn{
+  margin: 15px 0 !important;
+}
+.b-text{
+  margin-bottom: 0 !important;
+}
+.order-text{
+  font-size: 14px;
+  margin: 0;
+}
+.mobile{
+  display: none;
+}
+.jazz{
+  display: flex;
+}
+.prods-info{
+  margin-right: 12px !important;
+}
+.desktop-nav {
+  display: none;
+  }
+.hamburger {
+  display: block;
+  }
+.logo {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto 20px auto; /* centers logo */
+}
+
+}
 

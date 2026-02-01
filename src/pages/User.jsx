@@ -15,8 +15,7 @@ const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
     try {
-        // console.log({ email: loginEmail, password: loginPassword })
-      const response = await fetch("http://localhost:3001/api/byc-stores/auth/login", {
+      const response = await fetch("https://byc-ecommerce-backend.onrender.com/api/byc-stores/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +53,7 @@ const handleLogin = async (e) => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/api/byc-stores/user/register",
+        "https://byc-ecommerce-backend.onrender.com/api/byc-stores/user/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -102,65 +101,47 @@ const handleLogin = async (e) => {
                             onChange={(e) => setLoginPassword(e.target.value)}
                             required style={{border:"1px solid #BD3A3A",borderRadius:"5px"}} type="password" />
                     </div>
-                    <div className='d-flex justify-content-between mt-3'>
-                        <div className=''>
+                    <div className='d-flex justify-content-between mt-3 '>
+                        <div className='remember'>
                             <input type="checkbox" />
                             Remember me
                         </div>
-                        <small>forgot your password?</small>
+                        <small className='remember'>forgot your password?</small>
                     </div>
-                    <button type='submit' className='btn w-100 text-center mt-5' style={{backgroundColor:"#BD3A3A",color:"#fff",
+                    <button type='submit' className='btn w-100 text-center mt-5 login' style={{backgroundColor:"#BD3A3A",color:"#fff",
                         fontWeight:"700"}}>LOGIN</button>
                 </form> 
             </div>
-            <div className="col-md-1 " style={{borderLeft:"2px solid #F1EEEE",height:"380px"}}></div>
-            <div className="col-md-5">
-               <h5 className='text-center mb-5' style={{fontWeight:"700"}}>Create your account</h5>
-               <p>Create your customer account in just a few clicks! <br /> 
+            <div className="col-md-1 log-hr " style={{borderLeft:"2px solid #F1EEEE",height:"380px"}}></div>
+            <div className="col-md-5 sign-up">
+               <h5 className='text-center mb-4 sign-head' style={{fontWeight:"700"}}>Create your account</h5>
+               <p className='sign-text'>Create your customer account in just a few clicks! <br /> 
                   You can register using your e-mail address </p>
                   {showSignup && (
                     <form onSubmit={handleSignup}>
                     <div className="mb-3">
                   <label>Full Name</label>
-                  <input
-                    type="text"
-                    className="w-100 py-1"
-                    value={signupName}
-                    onChange={(e) => setSignupName(e.target.value)}
-                    required
-                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}
-                  />
+                  <input type="text" className="w-100 py-1" value={signupName}
+                    onChange={(e) => setSignupName(e.target.value)} required
+                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}/>
                 </div>
 
                 <div className="mb-3">
                   <label>E-mail</label>
-                  <input
-                    type="email"
-                    className="w-100 py-1"
-                    value={signupEmail}
-                    onChange={(e) => setSignupEmail(e.target.value)}
-                    required
-                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}
-                  />
+                  <input type="email" className="w-100 py-1" value={signupEmail}
+                    onChange={(e) => setSignupEmail(e.target.value)} required
+                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }} />
                 </div>
-
                 <div className="mb-4">
                   <label>Password</label>
-                  <input
-                    type="password"
-                    className="w-100 py-1"
-                    value={signupPassword}
-                    onChange={(e) => setSignupPassword(e.target.value)}
-                    required
-                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}
-                  />
+                  <input type="password" className="w-100 py-1" value={signupPassword}
+                    onChange={(e) => setSignupPassword(e.target.value)} required
+                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }} />
                 </div>
-
-                <button
-                  type="submit"
-                  className="btn w-100"
-                  style={{ backgroundColor: "#BD3A3A", color: "#fff", fontWeight: "700" }}
-                >
+                <button type="submit" className="btn w-100"
+                  style={{ 
+                    backgroundColor: "#BD3A3A", color: "#fff", fontWeight: "700" 
+                  }}>
                   SIGN UP
                 </button>
 

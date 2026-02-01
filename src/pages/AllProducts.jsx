@@ -15,14 +15,14 @@ const AllProducts = () => {
   const [loading, setLoading] = useState(true);
   const [showButton, setShowButton] = useState(null)
   const { wishlist, addToWishlist, removeFromWishlist } = useContext(CartContext);
-  const isInWishlist = (id) =>
-  wishlist.some(item => item._id === id);
+  const isInWishlist = (id) => wishlist.some(item => item._id === id);
+  const [searchBar, setSearchBar] = useState('')
 
    
 useEffect(() => {
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/byc-stores/product/get-all-products");
+      const response = await fetch("https://byc-ecommerce-backend.onrender.com/api/byc-stores/product/get-all-products");
       const data = await response.json();
 
       const formatted = data.map((item) => {
@@ -34,11 +34,11 @@ useEffect(() => {
             : 0;
 
         return {
-          _id: item._id,                        // use _id consistently
+          _id: item._id,                   
           name: item.productName,
           model: item.productNumber,
           description: item.productTitle,
-          price: Number(item.productPrice),     // keep as number
+          price: Number(item.productPrice),     
           rating: avgRating.toFixed(1),
           image: item.productImage[0],
           colors: [
@@ -47,7 +47,8 @@ useEffect(() => {
             { name: "Orange", hex: "#FB8200" },
             { name: "Black", hex: "#000" }
           ],
-          sizes: ["S", "M", "L", "XL"]
+          sizes: ["S", "M", "L", "XL"],
+          category: item.category
             };
       });
 
@@ -72,13 +73,22 @@ if (showDetails && selectedProduct) {
       />
     );
   }
+
+  const filteredProducts = products.filter((product) => {
+  const search = searchBar.toLowerCase();
+
+  return (
+    product.name?.toLowerCase().includes(search)
+  );
+});
+
  
   return (
     <>
     <div className="container all-products shadow">
       <div className='d-flex justify-content-between'>
-        <h3 className="page-title mt-5" style={{fontWeight:"700"}}>All Products</h3>
-        <div className="floating-select mt-5">
+        <h3 className="page-title font-jost mt-5" style={{fontWeight:"700"}}>All Products</h3>
+        <div className="most-sold floating-select mt-5">
           <select >
             <option>Most Sold</option>
           </select>
@@ -88,9 +98,15 @@ if (showDetails && selectedProduct) {
         </div>
       </div>
        <hr style={{backgroundColor:"#F1EEEE",height:"2px", border:"none"}}/>
-       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <div style={{backgroundColor:"#BD3A3A0F",color:"#000", padding:"7px 20px"}}><FaList size={20}/></div>
-          <div className='shadow-sm' style={{color:"#CE6B6B",padding:"7px 20px",backgroundColor:"#FFF"}}><FaThLarge size={20}/></div>
+        <div className='d-flex justify-content-between'>
+          <div className=''>
+        <input type="text" className='form-control w-100 py-3 ' placeholder='Search products...'
+        value={searchBar} onChange={(e) => setSearchBar(e.target.value)}/>
+       </div>
+       <div style={{ display: 'flex'}}>
+          <div className='d-list' style={{backgroundColor:"#BD3A3A0F",color:"#000", padding:"7px 20px"}}><FaList size={20}/></div>
+          <div className='d-list shadow-sm' style={{color:"#CE6B6B",padding:"7px 20px",backgroundColor:"#FFF"}}><FaThLarge size={20}/></div>
+        </div>
         </div>
         <hr style={{backgroundColor:"#F1EEEE",height:"2px", border:"none"}}/>
 
@@ -98,14 +114,14 @@ if (showDetails && selectedProduct) {
         {loading ? (
           <p>Loading products...</p>
         ) : (
-           products.map((product) => (
+           filteredProducts.map((product) => (
           <div className="product-card shadow-sm my-3 " onMouseOver={() => setShowButton(product._id)} key={product._id}>
             <img src={product.image} className="product-img w-100 rounded-top" />
             <div className='p-2'>
-            <h6 className="card-title mb-1 mt-2">{product.name}</h6>
-            <p className="card-text small mb-2">{product.model}</p>
+            <h6 className="card-title p-text mb-1 mt-2 text-uppercase">{product.name}</h6>
+            <p className="card-text text-uppercase small mb-2">{product.model}</p>
             <p className="text-secondary " style={{fontSize:'11px'}}>{product.description}</p>
-            <p className="mb-3" style={{fontWeight:"500"}}>{product.price}</p>
+            <p className="p-text mb-3" style={{fontWeight:"500"}}>₦{product.price}</p>
             <div className="d-flex align-items-center small mt-auto mb-4">
                 {[...Array(5)].map((_, i) => (
                     <AiFillStar
@@ -116,13 +132,13 @@ if (showDetails && selectedProduct) {
                 <span style={{fontWeight:"500",fontSize:"16px" ,color:"#5E6366",marginLeft:"8px"}}>{product.rating}</span>
             </div>
             {showButton === product._id && (
-              <div className='mb-3'>
-              <button className='mr-3' onClick={(e) => { e.stopPropagation(); isInWishlist(product._id)
+              <div className='mb-3   jazz'>
+              <button className='pro-btn mr-3' onClick={(e) => { e.stopPropagation(); isInWishlist(product._id)
                   ? removeFromWishlist(product._id)
                   : addToWishlist(product); }}
               style={{backgroundColor:"#fff",color:"#BD3A3A",border:"1px solid #BD3A3A",borderRadius:"5px",padding:"5px 7px",fontWeight:"500",fontSize:"13px"}}>
                 <FiHeart fill={isInWishlist(product._id) ? "#BD3A3A" : "none"} className='mr-2'/>Wishlist</button>
-              <button  onClick={(e) => {
+              <button className='pro-btn'  onClick={(e) => {
                         e.stopPropagation();
                         setSelectedProduct(product);
                         setShowDetails(true);

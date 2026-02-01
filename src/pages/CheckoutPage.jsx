@@ -8,6 +8,7 @@ const CheckoutPage = () => {
   const { cartItems, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
    useEffect(() => {
@@ -79,7 +80,7 @@ const CheckoutPage = () => {
               delete payload.companyName; 
             }
 
-             const res = await axios.post( "http://localhost:3001/api/byc-stores/customer/add-new-customer", 
+             const res = await axios.post( "https://byc-ecommerce-backend.onrender.com/api/byc-stores/customer/add-new-customer", 
               shippingInfo, 
               { 
                 headers: { 
@@ -183,7 +184,7 @@ const CheckoutPage = () => {
     };
 
     const response = await axios.post(
-      "http://localhost:3001/api/byc-stores/order/create",
+      "https://byc-ecommerce-backend.onrender.com/api/byc-stores/order/create",
       orderPayload,
       {
         headers: {
@@ -200,8 +201,8 @@ const CheckoutPage = () => {
     Swal.fire({
       icon: "success",
       title: "Redirecting to payment...",
-      text: "Please complete your payment",
     });
+    localStorage.setItem("lastOrderId", response.data._id);
      window.location.href = response.data.authorizationUrl;
 
   } catch (error) {
@@ -220,7 +221,7 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="container py-5">
+    <div className="container check-con">
       {/* ORDER SUMMARY */}
       <div className="card p-5 mb-5 border-0 shadow-sm">
         <h5 style={{ fontWeight: "700" }} className="mb-4">
@@ -231,33 +232,29 @@ const CheckoutPage = () => {
         {/* MAP THROUGH CART ITEMS */}
         {cartItems.map((product) => (
           <div key={product._id} className="row align-items-center mb-4">
-            {/* IMAGE */}
-            <div className="col-md-2">
+            <div className="col-md-2 col-4">
               <img
                 src={product.image}
                 alt={product.name}
-                className="img-fluid rounded"
+                className="img-fluid rounded pic-thumb"
               />
             </div>
 
-            {/* PRODUCT INFO */}
-            <div className="col-md-5">
-              <h6 style={{ fontWeight: "700" }} className="mb-1">
+            <div className="col-md-5 col-8">
+              <h6 style={{ fontWeight: "700" }} className="mb-1 text-uppercase checks-text">
                 {product.name}
               </h6>
-              <p style={{ fontWeight: "700" }} className="mb-1">
+              <p style={{ fontWeight: "700" }} className="mb-1 text-uppercase checks-text">
                 {product.model}
               </p>
-              <p className="">{product.description}</p>
-
-              <h5 style={{ fontWeight: "700" }} className="mt-3">
+              <p className="checks-text">{product.description}</p>
+              <h5 style={{ fontWeight: "700" }} className="mt-3 checks-text">
                 ₦{product.price.toLocaleString()}
               </h5>
               <p className="mb-0">
                 Quantity: <strong>{product.quantity}</strong>
               </p>
 
-              {/* Show selected size and color */}
               {product.selectedSize && (
                 <p className="mb-0">Size: <strong>{product.selectedSize}</strong></p>
               )}
@@ -266,9 +263,8 @@ const CheckoutPage = () => {
               )}
             </div>
 
-            <div style={{ borderLeft: "1px solid #F1EEEE", height: "180px" }}></div>
+            <div className="checkout-hr"></div>
 
-            {/* ITEM TOTAL */}
             <div className="col-md-4">
               <h6 style={{ fontWeight: "700" }}>
                 Item Total: ₦{(product.price * product.quantity).toLocaleString()}
@@ -277,17 +273,14 @@ const CheckoutPage = () => {
           </div>
         ))}
 
-        <button
-          onClick={() => navigate("/allProducts")}
+        <button onClick={() => navigate("/allProducts")}
           style={{ backgroundColor: "#BD3A3A", color: "#fff" }}
-          className="btn px-5 mt-3"
-        >
+          className="btn px-5 mt-3">
           Modify Cart
         </button>
 
         <hr style={{ backgroundColor: "#F1EEEE", height: "2px", border: "none" }} />
 
-        {/* TOTALS */}
         <div className="row">
           <div className="col-md-8"></div>
           <div className="col-md-4">
@@ -309,11 +302,9 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      {/* SHIPPING + CHECKOUT */}
       <div className="row">
-        {/* SHIPPING ADDRESS */}
         <div className="col-md-6 mt-5 mb-4">
-          <h5 style={{ fontWeight: "700" }} className="mb-2">
+          <h5 style={{ fontWeight: "700" }} className="mb-2 ships-text">
             SHIPPING ADDRESS
           </h5>
           <hr
@@ -324,126 +315,67 @@ const CheckoutPage = () => {
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="fullName">Full Name *</label>
-                <input
-                  id="fullName"
-                  type="text"
-                  style={{ border: "1px solid #BD3A3A" }}
-                  className="form-control"
-                  value={shippingInfo.fullName}
-                  onChange={handleInputChange}
-                  required
-                />
+                <input id="fullName" type="text" style={{ border: "1px solid #BD3A3A" }}
+                  className="form-control" value={shippingInfo.fullName} onChange={handleInputChange} required/>
               </div>
 
               <div className="mb-3">
                 <label htmlFor="companyName">Company name (optional)</label>
-                <input
-                  id="companyName"
-                  type="text"
-                  style={{ border: "1px solid #BD3A3A" }}
-                  className="form-control"
-                  value={shippingInfo.companyName}
-                  onChange={handleInputChange}
-                />
+                <input id="companyName" type="text" style={{ border: "1px solid #BD3A3A" }}
+                  className="form-control" value={shippingInfo.companyName} onChange={handleInputChange}/>
               </div>
 
               <div className="mb-3">
                 <label htmlFor="country">Country / Region *</label>
-                <input
-                  id="country"
-                  type="text"
-                  style={{ border: "1px solid #BD3A3A" }}
-                  className="form-control"
-                  value={shippingInfo.country}
-                  onChange={handleInputChange}
-                  required
-                />
+                <input id="country" type="text" style={{ border: "1px solid #BD3A3A" }}
+                  className="form-control" value={shippingInfo.country} onChange={handleInputChange} required/>
               </div>
 
               <div className="mb-3">
                 <label htmlFor="city">Town / City *</label>
-                <input
-                  id="city"
-                  type="text"
-                  style={{ border: "1px solid #BD3A3A" }}
-                  className="form-control"
-                  value={shippingInfo.city}
-                  onChange={handleInputChange}
-                  required
-                />
+                <input id="city" type="text" style={{ border: "1px solid #BD3A3A" }}
+                  className="form-control" value={shippingInfo.city} onChange={handleInputChange} required/>
               </div>
 
               <div className="mb-3">
                 <label htmlFor="state">State *</label>
-                <input
-                  id="state"
-                  type="text"
-                  style={{ border: "1px solid #BD3A3A" }}
-                  className="form-control"
-                  value={shippingInfo.state}
-                  onChange={handleInputChange}
-                  required
-                />
+                <input id="state" type="text" style={{ border: "1px solid #BD3A3A" }}
+                  className="form-control" value={shippingInfo.state} onChange={handleInputChange} required/>
               </div>
 
               <div className="mb-3">
                 <label htmlFor="address">Address *</label>
-                <input
-                  id="address"
-                  type="text"
-                  style={{ border: "1px solid #BD3A3A" }}
-                  className="form-control"
-                  value={shippingInfo.address}
-                  onChange={handleInputChange}
-                  required
-                />
+                <input id="address" type="text" style={{ border: "1px solid #BD3A3A" }} className="form-control"
+                  value={shippingInfo.address} onChange={handleInputChange} required />
               </div>
 
               <div className="mb-3">
                 <label htmlFor="phone">Phone *</label>
-                <input
-                  id="phone"
-                  type="tel"
-                  style={{ border: "1px solid #BD3A3A" }}
-                  className="form-control"
-                  value={shippingInfo.phone}
-                  onChange={handleInputChange}
-                  required
-                />
+                <input id="phone" type="tel" style={{ border: "1px solid #BD3A3A" }}
+                  className="form-control" value={shippingInfo.phone} onChange={handleInputChange}
+                  required/>
               </div>
 
               <div className="mb-3">
                 <label htmlFor="emailAddress">Email address *</label>
-                <input
-                  id="emailAddress"
-                  type="email"
+                <input id="emailAddress" type="email"
                   style={{ border: "1px solid #BD3A3A" }}
-                  className="form-control"
-                  value={shippingInfo.emailAddress}
-                  onChange={handleInputChange}
-                  required
-                />
+                  className="form-control" value={shippingInfo.emailAddress} onChange={handleInputChange}
+                  required />
               </div>
 
               <div className="mb-3">
                 <label htmlFor="landmark">Landmark *</label>
-                <input
-                  id="landMark"
-                  type="text"
+                <input id="landMark" type="text"
                   style={{ border: "1px solid #BD3A3A" }}
-                  className="form-control"
-                  value={shippingInfo.landMark}
-                  onChange={handleInputChange}
-                  required
-                />
+                  className="form-control" value={shippingInfo.landMark}
+                  onChange={handleInputChange} required/>
               </div>
 
-              <button
-                type="submit"
+              <button type="submit"
                 style={{ backgroundColor: "#BD3A3A", color: "#fff" }}
                 className="btn w-100"
-              >
-                Save Shipping Info
+              > Save Shipping Info
               </button>
             </form>
           </div>
@@ -451,9 +383,8 @@ const CheckoutPage = () => {
 
         <div className="col-md-1"></div>
 
-        {/* PAYMENT CHECKOUT */}
         <div className="col-md-5 mt-5">
-          <h5 style={{ fontWeight: "700" }} className="mb-3">
+          <h5 style={{ fontWeight: "700" }} className="mb-3 ships-text">
             CHECKOUT
           </h5>
           <hr
@@ -461,23 +392,16 @@ const CheckoutPage = () => {
           />
 
           <div style={{ backgroundColor: "#FFF8F8" }} className="card p-4 border-0">
-            {/* BANK TRANSFER */}
             <div className="p-3 rounded mb-3">
               <div className="form-check">
-                <input
-                  className="form-check-input"
-                  id="bankTransfer"
-                  type="radio"
-                  name="paymentMethod"
-                  value="bank_transfer"
+                <input className="form-check-input" id="bankTransfer" type="radio"
+                  name="paymentMethod" value="bank_transfer"
                   checked={paymentMethod === "bank_transfer"}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                />
+                  onChange={(e) => setPaymentMethod(e.target.value)} />
                 <label className="form-check-label fw-semibold" htmlFor="bankTransfer">
                   Direct bank transfer
                 </label>
               </div>
-
               {paymentMethod === "bank_transfer" && (
                 <p className="bg-light p-3 mt-3 rounded small">
                   Make your payment directly into our bank account. <br />
@@ -487,18 +411,12 @@ const CheckoutPage = () => {
               )}
             </div>
 
-            {/* ONLINE PAYMENT */}
             <div className="p-3 rounded mb-3">
               <div className="form-check">
-                <input
-                  className="form-check-input"
-                  id="onlinePayment"
-                  type="radio"
-                  name="paymentMethod"
-                  value="online_payment"
+                <input className="form-check-input" id="onlinePayment"
+                  type="radio" name="paymentMethod" value="online_payment"
                   checked={paymentMethod === "online_payment"}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                />
+                  onChange={(e) => setPaymentMethod(e.target.value)}/>
                 <label className="form-check-label fw-semibold" htmlFor="onlinePayment">
                   Secured Online Payment
                 </label>
@@ -509,8 +427,7 @@ const CheckoutPage = () => {
                   <img
                     src="https://res.cloudinary.com/dgwg6d5gv/image/upload/v1764773405/image_16_qceodn.png"
                     style={{ width: "150px" }}
-                    alt="Payment methods"
-                  />
+                    alt="Payment methods"/>
                 </div>
               )}
             </div>
@@ -522,10 +439,9 @@ const CheckoutPage = () => {
             </p>
           </div>
 
-          <button
-            onClick={handlePlaceOrder}
+          <button onClick={handlePlaceOrder}
             style={{ backgroundColor: "#BD3A3A", color: "#fff" }}
-            className="btn w-100 mt-4"
+            className="btn w-100 mt-4 mb-4"
           >
             Place Order - ₦{total.toLocaleString()}
           </button>

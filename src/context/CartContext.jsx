@@ -8,12 +8,27 @@ export const CartProvider = ({ children }) => {
   const savedWishlist = localStorage.getItem("wishlist");
   return savedWishlist ? JSON.parse(savedWishlist) : [];
 });
+  const [recentlyViewed, setRecentlyViewed] = useState(() => {
+  const saved = localStorage.getItem("recentlyViewed");
+  return saved ? JSON.parse(saved) : [];
+});
 
-// Load wishlist from localStorage on first render
-// useEffect(() => {
-//   const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-//   setWishlist(savedWishlist);
-// }, []);
+  useEffect(() => {
+  localStorage.setItem(
+    "recentlyViewed",
+    JSON.stringify(recentlyViewed)
+  );
+}, [recentlyViewed]);
+
+  const addToRecentlyViewed = (product) => {
+  setRecentlyViewed((prev) => {
+    const filtered = prev.filter(
+      (item) => item._id !== product._id
+    );
+
+    return [product, ...filtered].slice(0, 5);
+  });
+};
 
 // Save wishlist to localStorage whenever it changes
 useEffect(() => {
@@ -54,7 +69,6 @@ useEffect(() => {
         return [...prev, { ...product, quantity: product.quantity || 1 }];
       }
     });
-    // SweetAlert popup
     Swal.fire({
       icon: "success",
       title: "Added to Cart",
@@ -71,11 +85,9 @@ useEffect(() => {
       )
     );
   };
-  // :white_check_mark: Remove product
   const removeFromCart = (productId) => {
     setCartItems((prev) => prev.filter((item) => item._id !== productId));
   };
-  // :white_check_mark: Clear cart only after successful order
   const clearCart = () => {
     setCartItems([]);
     setCartCount(0);
@@ -108,7 +120,9 @@ const isInWishlist = (productId) => {
         wishlist,      
         addToWishlist,       
         removeFromWishlist, 
-        isInWishlist     
+        isInWishlist,
+        recentlyViewed,
+        addToRecentlyViewed     
       }}
     >
       {children}

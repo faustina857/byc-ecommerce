@@ -12,9 +12,10 @@ import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import User from './pages/User'
 import { CartProvider } from './context/CartContext'
-import Verify from './pages/Verify'
+import Verify from './pages/verify'
 import ProductDetails from './components/ProductDetails'
 import Wishlist from './components/Wishlist'
+import CategoryPage from './components/CategoryPage'
 
 function App() {
   
@@ -36,6 +37,7 @@ function App() {
           <Route path="/user" element={<User/>}></Route>
           <Route path="/verify" element={<Verify/>}></Route>
           <Route path="/wishlist" element={<Wishlist/>}></Route>
+          <Route path='/category/:categoryId' element={<CategoryPage/>}></Route>
           {/* <Route path="/product/:id" element={<ProductDetails />} /> */}
         </Routes>
       </CartProvider>

@@ -19,11 +19,7 @@ import Frame14 from './Frame14.png'
 import Frame15 from './Frame15.png'
 import Frame16 from './Frame16.png'
 import Frame17 from './Frame17.png'
-import Frame18 from './Frame18.png'
 import Frame19 from './Frame19.png'
-import Frame20 from './Frame20.png'
-import Frame21 from './Frame21.png'
-import Frame22 from './Frame22.png'
 import Awards from './Awards.png'
 import Image from './Image.png'
 import Mcard from './Mcard.png'
@@ -39,6 +35,6 @@ import Call from './Call.png'
 import Email from './Email.png'
 
 export {Byc, Frame1, Frame2, Frame3, Frame4, Frame5, Frame6, Frame7, Frame8, Frame9,
-     Frame14, Frame15, Frame16,Frame18,Rectangle, Location, Call, Email,Frame19, Frame20, Frame21, Frame22,
+     Frame14, Frame15, Frame16,Rectangle, Location, Call, Email,Frame19,
 Card1, Card2, Card3, Frame10, Frame11, Frame12,Frame13, Image, Mcard, Paypal, Visa, Icon1, Icon2, Icon3, Icon4, Awards, Frame17
 }

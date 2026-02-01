@@ -41,13 +41,12 @@ export default function CustomerReviews() {
       <h5 className="mb-3" style={{fontWeight:"700"}}>Customer Reviews</h5>
       <hr style={{backgroundColor:"#F1EEEE",height:"2px", border:"none"}}/>
 
-      {/* === PRODUCT RATINGS === */}
-      <p className="mb-4 mt-3">PRODUCT RATINGS (1129)</p>
-      <div className="d-flex prod-rev">
+      <p className="mb-4 mt-3 ships-text">PRODUCT RATINGS (1129)</p>
+      <div className="prod-rev">
         <div className="rounded rev-box" style={{ backgroundColor: "#F8F5F5"}}>
           <h3 className="text-center mb-1"> <strong>4.5</strong> /5.0</h3>
 
-          <div className="mt-3">
+          <div className="mt-3 reviews">
             <AiFillStar size={24} className="mr-2" color="#ff7a00"/>
             <AiFillStar size={24} className="mr-2" color="#ff7a00"/>
             <AiFillStar size={24} className="mr-2" color="#ff7a00"/>
@@ -56,7 +55,6 @@ export default function CustomerReviews() {
           </div>
         </div>
 
-        {/* RIGHT: Rating distribution */}
         <div>
           {[5,4,3,2,1].map((star) => (
             <div key={star} className="d-flex align-items-center mb-2">
@@ -73,7 +71,6 @@ export default function CustomerReviews() {
         </div>
       </div>
 
-      {/* === PRODUCT REVIEWS === */}
       <div className="d-flex justify-content-between align-items-center mt-4">
         <p className="fw-semibold">PRODUCT REVIEWS (438)</p>
         <a href="#" className="text-danger text-decoration-none">
@@ -81,7 +78,6 @@ export default function CustomerReviews() {
       </div>
       <hr style={{backgroundColor:"#F1EEEE",height:"2px", border:"none"}}/>
 
-      {/* === REVIEWS LIST === */}
       {reviews.map((rev, index) => (
         <div key={index} className="mb-4 pb-3"
         style={{borderBottom: index !== reviews.length - 1 ? "2px solid #F1EEEE" : "none",}}  >

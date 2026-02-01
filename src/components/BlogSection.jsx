@@ -3,11 +3,12 @@ import { FiArrowRight, FiEye, FiHeart } from "react-icons/fi";
 import { Frame10, Frame11, Frame12, Image} from '../assets';
 
 const BlogSection = () => {
+   
   return (
     <>
     <div className="container px-4 n-blog">
         <div className="row">
-        <div className="col-md-4">
+        <div className="col-md-4 b-card">
             <div className="card border-0 shadow-sm h-100" >
             <img src={Frame10} alt=""/>
             <div className="card-body">
@@ -29,7 +30,7 @@ const BlogSection = () => {
             </div>
         </div>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-4 b-card">
             <div className="card border-0 shadow-sm h-100" >
             <img src={Frame11} alt=""/>
             <div className="card-body">
@@ -51,7 +52,7 @@ const BlogSection = () => {
             </div>
         </div>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-4 ">
             <div className="card border-0 shadow-sm h-100" >
             <img src={Frame12} alt=""/>
             <div className="card-body">
@@ -75,7 +76,7 @@ const BlogSection = () => {
         </div>
         </div>
         <div className='text-center'>
-            <button className='framebtn font-jost'>View All</button>
+            <button onClick={() => navigate('/blog')} className='framebtn font-jost'>View All</button>
         </div>
     </div>
     </>

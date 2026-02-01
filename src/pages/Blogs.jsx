@@ -8,7 +8,7 @@ const Blogs = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/byc-stores/blog/get-single-blog/${id}`)
+    fetch(`https://byc-ecommerce-backend.onrender.com/api/byc-stores/blog/get-single-blog/${id}`)
       .then(res => res.json())
       .then(data => {
         setBlog(data);
@@ -37,7 +37,7 @@ const Blogs = () => {
         <p> {blog.blogContent}</p>
         <h2 className='text-center check'>More Blog news</h2>
       </div>
-      <BlogSection/>
+      <BlogSection className='mobile'/>
 
 
     </>

@@ -12,29 +12,29 @@ const Contact = () => {
             <div className="col-md-4 d-flex g-2">
                 <img src={Location} alt="" className='c-icon'/>
                 <div>
-                    <h5>ADDRESS</h5>
+                    <h5 className='year'>ADDRESS</h5>
                     <p>( Head Office ) <br />
                     175 Cameroun Road Aba, Abia State.
                     </p>
                 </div>
             </div>
-            <div className="col-md-4 d-flex g-2">
+            <div className="col-md-4 d-flex g-2 mb-2">
                 <img src={Call} alt="" className='c-icon'/>
                 <div>
-                    <h5>PHONE</h5>
+                    <h5 className='year'>PHONE</h5>
                     <p>08101375376 09053403403</p>
                 </div>
             </div>
             <div className="col-md-4 d-flex g-5">
                 <img src={Email} alt="" className='c-icon'/>
                 <div>
-                    <h5>EMAIL ADDRESS</h5>
+                    <h5 className='year'>EMAIL ADDRESS</h5>
                     <p>BYCAFRICA@gmail.com</p>
                 </div>
             </div>
         </div>
         <h2 className='font-jost check'>Drop a Message</h2>
-        <form style={{width: "32rem"}}>
+        <form className='contact-form' style={{width: "32rem"}}>
             <div className="c-form mb-4">
                 <label className="form-label" for="form4Example1">Phone</label>
                 <input type="text" id="form4Example1" className="form-control p-4" />
