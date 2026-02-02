@@ -12,10 +12,10 @@ import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import User from './pages/User'
 import { CartProvider } from './context/CartContext'
-import Verify from './pages/verify'
 import ProductDetails from './components/ProductDetails'
 import Wishlist from './components/Wishlist'
 import CategoryPage from './components/CategoryPage'
+import Verify from './pages/Verify'
 
 function App() {
   
