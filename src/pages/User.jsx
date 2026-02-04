@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { useNavigate } from "react-router-dom";
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const User = () => {
     const navigate = useNavigate()
@@ -10,6 +11,7 @@ const User = () => {
     const [signupEmail, setSignupEmail] = useState("");
     const [signupPassword, setSignupPassword] = useState("");
     const [message, setMessage] = useState("");
+    const [showPassword, setShowPassword] = useState(false)
 
 const handleLogin = async (e) => {
     e.preventDefault();
@@ -97,9 +99,33 @@ const handleLogin = async (e) => {
                     </div>
                     <div>
                         <label htmlFor="password">Password</label><br />
-                        <input className='w-100 py-1' value={loginPassword}
-                            onChange={(e) => setLoginPassword(e.target.value)}
-                            required style={{border:"1px solid #BD3A3A",borderRadius:"5px"}} type="password" />
+                        <div style={{ position: "relative" }}>
+    <input id="password"
+      className="w-100 py-1"
+      value={loginPassword}
+      onChange={(e) => setLoginPassword(e.target.value)}
+      required
+      type={showPassword ? "text" : "password"}
+      style={{
+        border: "1px solid #BD3A3A",
+        borderRadius: "5px",
+      }}
+    />
+
+    <span
+      onClick={() => setShowPassword(!showPassword)}
+      style={{
+        position: "absolute",
+        right: "10px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        cursor: "pointer",
+        color: "#555"
+      }}
+    >
+      {showPassword ? <FiEyeOff /> : <FiEye />}
+    </span>
+  </div>
                     </div>
                     <div className='d-flex justify-content-between mt-3 '>
                         <div className='remember'>
@@ -120,23 +146,35 @@ const handleLogin = async (e) => {
                   {showSignup && (
                     <form onSubmit={handleSignup}>
                     <div className="mb-3">
-                  <label>Full Name</label>
-                  <input type="text" className="w-100 py-1" value={signupName}
+                  <label htmlFor='fullName'>Full Name</label>
+                  <input type="text" id="fullName" className="w-100 py-1" value={signupName}
                     onChange={(e) => setSignupName(e.target.value)} required
                     style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}/>
                 </div>
 
                 <div className="mb-3">
-                  <label>E-mail</label>
-                  <input type="email" className="w-100 py-1" value={signupEmail}
+                  <label htmlFor='email'>E-mail</label>
+                  <input type="email" id="email" className="w-100 py-1" value={signupEmail}
                     onChange={(e) => setSignupEmail(e.target.value)} required
                     style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }} />
                 </div>
                 <div className="mb-4">
-                  <label>Password</label>
-                  <input type="password" className="w-100 py-1" value={signupPassword}
+                  <label htmlFor='password'>Password</label>
+                  <div style={{ position: 'relative'}}>
+                  <input id="password" type={showPassword ? "text" : "password"} className="w-100 py-1" value={signupPassword}
                     onChange={(e) => setSignupPassword(e.target.value)} required
                     style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }} />
+                    <span onClick={() => setShowPassword(!showPassword)}
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        cursor: "pointer",
+                        color: "#555"
+                      }}> {showPassword ? <FiEyeOff/> : <FiEye/>}
+                    </span>
+                  </div>
                 </div>
                 <button type="submit" className="btn w-100"
                   style={{ 

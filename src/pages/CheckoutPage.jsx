@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import axios from 'axios'
 
 const CheckoutPage = () => {
-  const { cartItems, clearCart } = useContext(CartContext);
+  const { cartItems } = useContext(CartContext);
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
 
@@ -51,16 +51,8 @@ const CheckoutPage = () => {
       }); };
        // Validate required fields (companyName excluded) 
     const validateForm = () => { 
-      const { 
-        fullName, 
-        country, 
-        city, 
-        state, 
-        address, 
-        phone, 
-        emailAddress 
-      } = shippingInfo; 
-    if (!fullName || !country || !city || !state || !address || !phone || !emailAddress) {
+      const { fullName, country, city, state, address, phone, emailAddress ,landMark} = shippingInfo; 
+    if (!fullName || !country || !city || !state || !address || !phone || !emailAddress || !landMark) {
        return false; 
       } return true; }; 
 
@@ -112,21 +104,6 @@ const CheckoutPage = () => {
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      Swal.fire({
-        icon: "warning",
-        title: "Login Required",
-        text: "You must be logged in to place an order!",
-        confirmButtonText: "Login",
-      }).then(() => {
-        localStorage.setItem("redirectAfterLogin", window.location.pathname);
-      // Redirect user to login page if they click "Login"
-      window.location.href = "/user"; 
-    });
-    return;
-    }
-
     if (!validateForm()) { 
         Swal.fire({
            icon: "warning",
@@ -141,6 +118,21 @@ const CheckoutPage = () => {
         text:'Please choose a payment method'
       })
       return;
+    }
+
+     const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        icon: "warning",
+        title: "Login Required",
+        text: "You must be logged in to place an order!",
+        confirmButtonText: "Login",
+      }).then(() => {
+        localStorage.setItem("redirectAfterLogin", window.location.pathname);
+      // Redirect user to login page if they click "Login"
+      window.location.href = "/user"; 
+    });
+    return;
     }
 
   try {
@@ -195,8 +187,6 @@ const CheckoutPage = () => {
     );
 
     console.log("Order created successfully:", response.data);
-
-    clearCart();
 
     Swal.fire({
       icon: "success",

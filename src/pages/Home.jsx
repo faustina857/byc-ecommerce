@@ -57,7 +57,7 @@ const Home = () => {
         </div>
       </div>
       <div className='text-center'>
-        <button className="framebtn font-jost">View All</button>
+        <button onClick={viewAllProducts} className="framebtn font-jost">View All</button>
       </div>
       </div>
       <div className="container h-third">

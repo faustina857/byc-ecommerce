@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import OrderModal from "../components/OrderModal";
+import { CartContext } from "../context/CartContext";
 
 const Verify = () => {
+  const { clearCart } = useContext(CartContext);
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const [orderDetails, setOrderDetails] = useState(null)
@@ -28,7 +30,7 @@ const Verify = () => {
           title: "Payment Successful",
           text: "Your order has been confirmed!",
         });
-
+        clearCart();
         localStorage.removeItem("cartItems");
 
       } catch (error) {

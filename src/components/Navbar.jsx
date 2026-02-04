@@ -78,13 +78,31 @@ const Navbar = () => {
             <img src={Byc} alt="" className="logo" />
           </div>
 
-        <Link to="/" onClick={() => setOpen(false)}>Shop Products</Link>
+        <Link to="/allProducts" onClick={() => setOpen(false)}>Shop Products</Link>
         <Link to="/blog" onClick={() => setOpen(false)}>Blog</Link>
         <Link to="/about" onClick={() => setOpen(false)}>About Us</Link>
         <Link to="/contact" onClick={() => setOpen(false)}>Contact</Link>
-        <Link to="/wishlist" onClick={() => setOpen(false)}>Wishlist</Link>
-        <Link to="/cart" onClick={() => setOpen(false)}>Cart</Link>
-
+        <div className="d-flex">
+        <Link to="/user" onClick={() => setOpen(false)}>
+              <FiUser size={20} style={{ marginRight: 17 }} />
+        </Link>
+        <div onClick={() => {navigate("/cart");
+            setOpen(false)
+          }}
+              style={{ cursor: "pointer", position: "relative" }}>
+              <FiShoppingCart size={20} style={{ marginRight: 17 }} />
+              {cartCount > 0 && (
+                <span className="badge">{cartCount}</span>
+              )}
+            </div>
+            <div onClick={() => {navigate("/wishlist");setOpen(false)}}
+              style={{ cursor: "pointer", position: "relative" }}>
+              <FiHeart size={20} style={{ marginRight: 17 }} />
+              {wishlist.length > 0 && (
+                <span className="badge">{wishlist.length}</span>
+              )}
+            </div>
+            </div>
       </div>
 
       {/* Overlay */}

@@ -36,17 +36,17 @@ const Contact = () => {
         <h2 className='font-jost check'>Drop a Message</h2>
         <form className='contact-form' style={{width: "32rem"}}>
             <div className="c-form mb-4">
-                <label className="form-label" for="form4Example1">Phone</label>
+                <label className="form-label" htmlFor="form4Example1">Phone</label>
                 <input type="text" id="form4Example1" className="form-control p-4" />
             </div>
 
             <div className="c-form form-outline mb-4">
-                <label className="form-label" for="form4Example2">Email address</label>
+                <label className="form-label" htmlFor="form4Example2">Email address</label>
                 <input type="email" id="form4Example2" className="form-control p-4" />
             </div>
 
             <div className="c-form form-outline mb-4">
-                <label className="form-label" for="form4Example3">Notes</label>
+                <label className="form-label" htmlFor="form4Example3">Notes</label>
                 <textarea className="form-control" id="form4Example3" rows="6"></textarea>
             </div>
 
