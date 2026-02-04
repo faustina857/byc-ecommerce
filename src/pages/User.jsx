@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { CartContext } from "../context/CartContext";
 
 const User = () => {
     const navigate = useNavigate()
@@ -12,6 +13,8 @@ const User = () => {
     const [signupPassword, setSignupPassword] = useState("");
     const [message, setMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false)
+    const { clearCart } = useContext(CartContext);
+
 
 const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,6 +38,18 @@ const handleLogin = async (e) => {
       if (!response.ok) {
         throw new Error(data.message || "Login failed. Try again.");
       }
+
+       // ✅ Clear cart if a different user logs in
+     const previousEmail = localStorage.getItem("loggedInEmail");
+     if (previousEmail && previousEmail !== loginEmail) {
+        clearCart();
+      }
+
+    // Save current user email
+    localStorage.setItem("loggedInEmail", loginEmail);
+
+    // Save token
+    localStorage.setItem("token", data.token);
       setMessage("Login successful!");
       localStorage.setItem("token", data.token);
       const redirectTo = localStorage.getItem("redirectAfterLogin") || "/";
@@ -45,9 +60,6 @@ const handleLogin = async (e) => {
       setMessage(error.message);
     }
   };
-
-
-
 
    const handleSignup = async (e) => {
     e.preventDefault();

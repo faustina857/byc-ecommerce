@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import axios from 'axios'
 
 const CheckoutPage = () => {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
 
@@ -186,14 +186,21 @@ const CheckoutPage = () => {
       }
     );
 
-    console.log("Order created successfully:", response.data);
+    if (response.data) {
+      Swal.fire({
+        icon: "success",
+        title:"Order Placed!",
+        text: "Redirecting to payment..."
+      }).then(() => {
+          // ✅ Clear the cart now that order succeeded
+        clearCart();
 
-    Swal.fire({
-      icon: "success",
-      title: "Redirecting to payment...",
-    });
-    localStorage.setItem("lastOrderId", response.data._id);
-     window.location.href = response.data.authorizationUrl;
+            localStorage.setItem("lastOrderId", response.data._id);
+            window.location.href = response.data.authorizationUrl;
+      });
+    }
+
+
 
   } catch (error) {
     console.error(
