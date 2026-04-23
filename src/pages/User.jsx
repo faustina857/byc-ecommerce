@@ -33,7 +33,6 @@ const handleLogin = async (e) => {
       });
 
      const data = await response.json();
-     console.log(data)
 
       if (!response.ok) {
         throw new Error(data.message || "Login failed. Try again.");
@@ -51,7 +50,6 @@ const handleLogin = async (e) => {
     // Save token
     localStorage.setItem("token", data.token);
       setMessage("Login successful!");
-      localStorage.setItem("token", data.token);
       const redirectTo = localStorage.getItem("redirectAfterLogin") || "/";
       localStorage.removeItem("redirectAfterLogin"); // clean up
       navigate(redirectTo); // redirect after login
@@ -100,108 +98,84 @@ const handleLogin = async (e) => {
           <div className="alert alert-info text-center">{message}</div>
         )}
         <div className="row">
-            <div className="col-md-6">
-                <h5 className='text-center mb-5' style={{fontWeight:"700"}}>Login</h5>
-                <form onSubmit={handleLogin}>
-                    <div className='mb-4'>
-                        <label htmlFor="email">E-mail</label><br />
-                        <input type="email" id='email' className='w-100 py-1' value={loginEmail}
-                          onChange={(e) => setLoginEmail(e.target.value)} required style={{border:"1px solid #BD3A3A",
-                          borderRadius:"5px"}}/>
-                    </div>
-                    <div>
-                        <label htmlFor="password">Password</label><br />
-                        <div style={{ position: "relative" }}>
-    <input id="password"
-      className="w-100 py-1"
-      value={loginPassword}
-      onChange={(e) => setLoginPassword(e.target.value)}
-      required
-      type={showPassword ? "text" : "password"}
-      style={{
-        border: "1px solid #BD3A3A",
-        borderRadius: "5px",
-      }}
-    />
-
-    <span
-      onClick={() => setShowPassword(!showPassword)}
-      style={{
-        position: "absolute",
-        right: "10px",
-        top: "50%",
-        transform: "translateY(-50%)",
-        cursor: "pointer",
-        color: "#555"
-      }}
-    >
-      {showPassword ? <FiEyeOff /> : <FiEye />}
-    </span>
-  </div>
-                    </div>
-                    <div className='d-flex justify-content-between mt-3 '>
-                        <div className='remember'>
-                            <input type="checkbox" />
-                            Remember me
-                        </div>
-                        <small className='remember'>forgot your password?</small>
-                    </div>
-                    <button type='submit' className='btn w-100 text-center mt-5 login' style={{backgroundColor:"#BD3A3A",color:"#fff",
-                        fontWeight:"700"}}>LOGIN</button>
-                </form> 
+          <div className="col-md-6">
+            <h5 className='text-center mb-5' style={{fontWeight:"700"}}>Login</h5>
+          <form onSubmit={handleLogin}>
+              <div className='mb-4'>
+                <label htmlFor="email">E-mail</label><br />
+                <input type="email" id='email' className='w-100 py-1' value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)} required style={{border:"1px solid #BD3A3A",
+                borderRadius:"5px"}}/>
+              </div>
+          <div>
+            <label htmlFor="password">Password</label><br />
+            <div style={{ position: "relative" }}>
+              <input id="password" className="w-100 py-1" value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)} required
+                type={showPassword ? "text" : "password"} 
+                style={{border: "1px solid #BD3A3A",borderRadius: "5px" }} />
+              <span onClick={() => setShowPassword(!showPassword)}
+              style={{ position: "absolute",right: "10px",top: "50%",transform: "translateY(-50%)", cursor: "pointer", color: "#555"}}>
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </span>
             </div>
-            <div className="col-md-1 log-hr " style={{borderLeft:"2px solid #F1EEEE",height:"380px"}}></div>
+          </div>
+          <button type='submit' className='btn w-100 text-center mt-5 login' style={{backgroundColor:"#BD3A3A",color:"#fff",
+             fontWeight:"700"}}>LOGIN</button>
+          </form> 
+          </div>
+          <div className="col-md-1 log-hr " style={{borderLeft:"2px solid #F1EEEE",height:"380px"}}></div>
             <div className="col-md-5 sign-up">
-               <h5 className='text-center mb-4 sign-head' style={{fontWeight:"700"}}>Create your account</h5>
-               <p className='sign-text'>Create your customer account in just a few clicks! <br /> 
-                  You can register using your e-mail address </p>
-                  {showSignup && (
-                    <form onSubmit={handleSignup}>
+              <h5 className='text-center mb-4 sign-head' style={{fontWeight:"700"}}>Create your account</h5>
+              <p className='sign-text'>Create your customer account in just a few clicks! <br /> 
+                 You can register using your e-mail address </p>
+                {showSignup && (
+                  <form onSubmit={handleSignup}>
                     <div className="mb-3">
-                  <label htmlFor='fullName'>Full Name</label>
-                  <input type="text" id="fullName" className="w-100 py-1" value={signupName}
-                    onChange={(e) => setSignupName(e.target.value)} required
-                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}/>
-                </div>
+                      <label htmlFor='fullName'>Full Name</label>
+                      <input type="text" id="fullName" className="w-100 py-1" value={signupName}
+                        onChange={(e) => setSignupName(e.target.value)} required
+                        style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }}/>
+                    </div>
 
-                <div className="mb-3">
-                  <label htmlFor='email'>E-mail</label>
-                  <input type="email" id="email" className="w-100 py-1" value={signupEmail}
-                    onChange={(e) => setSignupEmail(e.target.value)} required
-                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }} />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor='password'>Password</label>
-                  <div style={{ position: 'relative'}}>
-                  <input id="password" type={showPassword ? "text" : "password"} className="w-100 py-1" value={signupPassword}
-                    onChange={(e) => setSignupPassword(e.target.value)} required
-                    style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }} />
-                    <span onClick={() => setShowPassword(!showPassword)}
-                      style={{
-                        position: "absolute",
-                        right: "10px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        cursor: "pointer",
-                        color: "#555"
-                      }}> {showPassword ? <FiEyeOff/> : <FiEye/>}
-                    </span>
-                  </div>
-                </div>
-                <button type="submit" className="btn w-100"
-                  style={{ 
-                    backgroundColor: "#BD3A3A", color: "#fff", fontWeight: "700" 
-                  }}>
-                  SIGN UP
-                </button>
+                    <div className="mb-3">
+                      <label htmlFor='email'>E-mail</label>
+                      <input type="email" id="email" className="w-100 py-1" value={signupEmail}
+                        onChange={(e) => setSignupEmail(e.target.value)} required
+                        style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }} />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor='password'>Password</label>
+                      <div style={{ position: 'relative'}}>
+                      <input id="password" type={showPassword ? "text" : "password"} className="w-100 py-1" value={signupPassword}
+                        onChange={(e) => setSignupPassword(e.target.value)} required
+                        style={{ border: "1px solid #BD3A3A", borderRadius: "5px" }} />
+                        <span onClick={() => setShowPassword(!showPassword)}
+                          style={{
+                            position: "absolute",
+                            right: "10px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            cursor: "pointer",
+                            color: "#555"
+                          }}> {showPassword ? <FiEyeOff/> : <FiEye/>}
+                        </span>
+                      </div>
+                    </div>
+                    <button type="submit" className="btn w-100"
+                      style={{ 
+                        backgroundColor: "#BD3A3A", color: "#fff", fontWeight: "700" 
+                      }}>
+                      SIGN UP
+                    </button>
 
                   </form>
                 )}
-                  {!showSignup && (
-                    <button className='btn w-100 create' onClick={() => setShowSignup(true)} style={{fontWeight:"700",backgroundColor:"#BD3A3A",color:"#fff"}}>CREATE AN ACCOUNT VIA E-MAIL</button>
-                  )}
+                {!showSignup && (
+                  <button className='btn w-100 create' onClick={() => setShowSignup(true)} style={{fontWeight:"700",backgroundColor:"#BD3A3A",color:"#fff"}}>CREATE AN ACCOUNT VIA E-MAIL</button>
+                )}
             </div>
-        </div>
+          </div>
       </div>
     </>
   )

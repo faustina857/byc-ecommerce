@@ -525,7 +525,35 @@
   font-weight: 400;
   color: black;
 }
+.swal2-popup {
+  width: 100px !important;
+  font-size: 3px !important;
+  padding: 1.2rem !important;
+}
 
+.swal2-title {
+  font-size: 16px !important;
+}
+
+.swal2-html-container {
+  font-size: 13px !important;
+}
+
+.swal2-icon {
+  width: 50px !important;
+  height: 50px !important;
+  margin: 0.5rem auto !important;
+}
+
+.swal2-icon .swal2-icon-content {
+  font-size: 30px !important;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+  font-size: 13px !important;
+  padding: 6px 20px !important;
+}
 
 
 @media screen and (max-width: 830px){
