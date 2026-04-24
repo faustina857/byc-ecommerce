@@ -14,6 +14,19 @@ const Cart = () => {
     0
   );
 
+  if (cartItems.length === 0) {
+    return (
+      <div className="container py-5 text-center">
+        <h4 className="fw-bold mb-3">Your Cart is Empty</h4>
+        <p className="text-muted mb-4">Browse our products and add something you love.</p>
+        <button onClick={() => navigate("/allProducts")}
+          style={{ backgroundColor: "#BD3A3A", color: "#fff", border: "none", padding: "10px 25px", borderRadius: "5px" }}>
+          Continue Shopping
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="container py-5">
       <h5 className="mb-4 fw-bold">Cart {cartItems.length} item(s)</h5>

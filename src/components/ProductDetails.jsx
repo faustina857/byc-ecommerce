@@ -14,10 +14,8 @@ const ProductDetails = ({ product, onBack }) => {
   const { addToWishlist, removeFromWishlist, wishlist } = useContext(CartContext);
 
   useEffect(() => {
-    if (product) {
-      addToRecentlyViewed(product);
-    }
-  }, [product]);
+    if (product) addToRecentlyViewed(product);
+  }, [product, addToRecentlyViewed]);
 
   const isInWishlist = wishlist.some(
     item => item._id === product._id

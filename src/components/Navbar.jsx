@@ -6,9 +6,18 @@ import { CartContext } from '../context/CartContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { cartCount, wishlist } = useContext(CartContext);
-
+  const { cartCount, wishlist, clearCart } = useContext(CartContext);
   const [open, setOpen] = useState(false);
+  const isLoggedIn = !!localStorage.getItem("token");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("loggedInEmail");
+    localStorage.removeItem("customerId");
+    sessionStorage.removeItem("shippingInfo");
+    clearCart();
+    navigate("/user");
+  };
 
   return (
     <>
@@ -44,9 +53,16 @@ const Navbar = () => {
           {/* Icons */}
           <div className="d-flex align-items-center">
             <FiSearch size={20} style={{ marginRight: 17 }} />
-            <Link to="/user">
-              <FiUser size={20} style={{ marginRight: 17 }} />
-            </Link>
+            {isLoggedIn ? (
+              <span onClick={handleLogout} title="Logout"
+                style={{ cursor: "pointer", marginRight: 17, color: "#BD3A3A", fontSize: "13px", fontWeight: "500" }}>
+                Logout
+              </span>
+            ) : (
+              <Link to="/user">
+                <FiUser size={20} style={{ marginRight: 17 }} />
+              </Link>
+            )}
             {/* Wishlist */}
             <div onClick={() => navigate("/wishlist")}
               style={{ cursor: "pointer", position: "relative" }}>
@@ -83,9 +99,16 @@ const Navbar = () => {
         <Link to="/about" onClick={() => setOpen(false)}>About Us</Link>
         <Link to="/contact" onClick={() => setOpen(false)}>Contact</Link>
         <div className="d-flex">
-        <Link to="/user" onClick={() => setOpen(false)}>
-              <FiUser size={20} style={{ marginRight: 17 }} />
-        </Link>
+        {isLoggedIn ? (
+          <span onClick={() => { handleLogout(); setOpen(false); }}
+            style={{ cursor: "pointer", marginRight: 17, color: "#BD3A3A", fontSize: "13px", fontWeight: "500" }}>
+            Logout
+          </span>
+        ) : (
+          <Link to="/user" onClick={() => setOpen(false)}>
+            <FiUser size={20} style={{ marginRight: 17 }} />
+          </Link>
+        )}
         <div onClick={() => {navigate("/cart");
             setOpen(false)
           }}

@@ -17,6 +17,7 @@ const AllProducts = () => {
   const { wishlist, addToWishlist, removeFromWishlist } = useContext(CartContext);
   const isInWishlist = (id) => wishlist.some(item => item._id === id);
   const [searchBar, setSearchBar] = useState('')
+  const [error, setError] = useState(null)
 
    
 useEffect(() => {
@@ -55,7 +56,8 @@ useEffect(() => {
       setProducts(formatted);
       setLoading(false);
     } catch (error) {
-      console.log("Fetch error:", error);
+      console.error("Fetch error:", error);
+      setError("Failed to load products. Please try again.");
       setLoading(false);
     }
   };
@@ -78,7 +80,9 @@ if (showDetails && selectedProduct) {
   const search = searchBar.toLowerCase();
 
   return (
-    product.name?.toLowerCase().includes(search)
+    product.name?.toLowerCase().includes(search) ||
+    product.model?.toLowerCase().includes(search) ||
+    product.description?.toLowerCase().includes(search)
   );
 });
 
@@ -111,7 +115,9 @@ if (showDetails && selectedProduct) {
         <hr style={{backgroundColor:"#F1EEEE",height:"2px", border:"none"}}/>
 
       <div className="products-grid">
-        {loading ? (
+        {error ? (
+          <p className="text-danger text-center py-4">{error}</p>
+        ) : loading ? (
           <p>Loading products...</p>
         ) : (
            filteredProducts.map((product) => (
@@ -121,7 +127,7 @@ if (showDetails && selectedProduct) {
             <h6 className="card-title p-text mb-1 mt-2 text-uppercase">{product.name}</h6>
             <p className="card-text text-uppercase small mb-2">{product.model}</p>
             <p className="text-secondary " style={{fontSize:'11px'}}>{product.description}</p>
-            <p className="p-text mb-3" style={{fontWeight:"500"}}>₦{product.price}</p>
+            <p className="p-text mb-3" style={{fontWeight:"500"}}>₦{product.price.toLocaleString()}</p>
             <div className="d-flex align-items-center small mt-auto mb-4">
                 {[...Array(5)].map((_, i) => (
                     <AiFillStar

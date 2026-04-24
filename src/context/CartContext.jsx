@@ -44,14 +44,10 @@ useEffect(() => {
       setCartCount(parsed.reduce((sum, item) => sum + item.quantity, 0));
     }
   }, []);
-  // Save cart to localStorage whenever it changes
+  // Save cart to localStorage whenever it changes (always, even when empty)
   useEffect(() => {
-    // :white_check_mark: Only save if cartItems is not empty
-    if (cartItems.length > 0) {
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    }
-    const total = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    setCartCount(total);
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    setCartCount(cartItems.reduce((sum, item) => sum + item.quantity, 0));
   }, [cartItems]);
   // :white_check_mark: Add product to cart
   const addToCart = (product) => {
@@ -129,13 +125,3 @@ const isInWishlist = (productId) => {
     </CartContext.Provider>
   );
 };
-
-
-
-
-
-
-
-
-
-
